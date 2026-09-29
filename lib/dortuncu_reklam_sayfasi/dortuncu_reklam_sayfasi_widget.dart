@@ -1,3 +1,4 @@
+import '/components/rfq_bottom_sheet_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -337,8 +338,17 @@ class _DortuncuReklamSayfasiWidgetState
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 30.0, 30.0, 0.0),
                           child: FFButtonWidget(
-                            onPressed: () {
-                              print('Button-SpecialOrder pressed ...');
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => const RfqBottomSheetWidget(
+                                  productName:
+                                      'Zapytanie Specjalne / Special Order',
+                                  productId: 'special_order_dortuncu',
+                                ),
+                              );
                             },
                             text: FFLocalizations.of(context).getText(
                               'kby504r4' /* Special Order

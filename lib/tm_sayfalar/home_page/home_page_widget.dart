@@ -11,6 +11,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import '/components/rfq_bottom_sheet_widget.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -360,8 +361,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
         ),
         body: SafeArea(
           top: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
+          child: SingleChildScrollView(
+            child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Column(
                 mainAxisSize: MainAxisSize.max,
@@ -522,7 +524,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     ),
                 ],
               ),
-              Row(
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   if (responsiveVisibility(
@@ -652,8 +656,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                       ),
                     ),
                 ],
+                ),
               ),
-              Row(
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   if (responsiveVisibility(
@@ -805,8 +812,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             'sye4ck7e' /* Special Order */,
                           )
                         ],
-                        onChanged: (val) =>
-                            safeSetState(() => _model.dropDownValue = val),
+                        onChanged: (val) async {
+  safeSetState(() => _model.dropDownValue = val);
+  
+  // Kullanıcı seçimi yaptığında B2B teklif formunu tetikler
+  await showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) => const RfqBottomSheetWidget(
+      productName: 'Zapytanie Specjalne / Special Order',
+      productId: 'special_order_dropdown',
+    ),
+  );
+},
                         width: 82.36,
                         height: 40.0,
                         textStyle:
@@ -851,6 +870,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                       ),
                     ),
                 ],
+                ),
               ),
               Row(
                 mainAxisSize: MainAxisSize.max,
@@ -1429,7 +1449,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                 context: context,
                 phone: false,
               ))
-                Row(
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
@@ -1666,9 +1688,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                       padding:
                           EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 30.0, 0.0),
                       child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button-SpecialOrder pressed ...');
-                        },
+                        onPressed: () async {
+                            await showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => const RfqBottomSheetWidget(
+                                productName: 'Zapytanie Specjalne / Special Order',
+                                productId: 'special_order_general',
+                                ),
+                                );
+                                },
                         text: FFLocalizations.of(context).getText(
                           'j7ebtgo7' /* Special Order
  */
@@ -1723,6 +1753,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                       ),
                     ),
                   ],
+                  ),
                 ),
               if (responsiveVisibility(
                 context: context,
@@ -7045,6 +7076,7 @@ Page Visits */
                     animationsMap['columnOnPageLoadAnimation']!),
               ),
             ],
+          ),
           ),
         ),
       ),
